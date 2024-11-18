@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\SocialAuthController;
 
 Route::get('/', function () {
     return redirect()-> route('login');
@@ -19,3 +20,10 @@ Route::middleware('auth')->group(function () {
         return view('auth/dashboard');
     });
 });
+
+Route::middleware('auth')->group(function () {
+    Route::get('auth/linkedin', [SocialAuthController::class, 'redirectToLinkedIn'])->name('auth.linkedin');
+    Route::get('auth/linkedin/callback', [SocialAuthController::class, 'handleLinkedInCallback']);
+});
+
+
