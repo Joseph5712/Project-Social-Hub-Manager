@@ -36,8 +36,14 @@ return [
         
     ],
     'linkedin' => [
-    'client_id' => env('LINKEDIN_CLIENT_ID'),
-    'client_secret' => env('LINKEDIN_CLIENT_SECRET'),
-    'redirect' => env('LINKEDIN_REDIRECT'),
+    'client_id' => '782jqozziylt5p',
+    'client_secret' => 'WPL_AP1.zAdhTI5CBVFqsGZv.2VmpsA',
+    'redirect' => 'http://project.mysocialhub.xyz/auth/linkedin/callback',
+    ],
+
+    'pinterest' => [
+    'client_id' => env('PINTEREST_CLIENT_ID'),
+    'client_secret' => env('PINTEREST_CLIENT_SECRET'),
+    'redirect' => env('PINTEREST_REDIRECT_URI'),
     ],
 ];

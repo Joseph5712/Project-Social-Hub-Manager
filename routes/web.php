@@ -18,7 +18,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middl
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', function () {
         return view('auth/dashboard');
-    });
+    })->name('dashboard');
 });
 
 Route::middleware('auth')->group(function () {
@@ -26,4 +26,7 @@ Route::middleware('auth')->group(function () {
     Route::get('auth/linkedin/callback', [SocialAuthController::class, 'handleLinkedInCallback']);
 });
 
+
+Route::get('/auth/pinterest', [SocialAuthController::class, 'redirectToPinterest'])->name('auth.pinterest');
+Route::get('/auth/pinterest/callback', [SocialAuthController::class, 'handlePinterestCallback']);
 

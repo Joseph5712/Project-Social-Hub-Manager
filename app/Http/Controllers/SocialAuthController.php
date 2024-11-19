@@ -25,6 +25,26 @@ class SocialAuthController extends Controller
         return redirect('/dashboard');
     }
 
+
+    public function redirectToPinterest()
+    {
+        return Socialite::driver('pinterest')->redirect();
+    }
+
+
+    public function handlePinterestCallback()
+{
+    try {
+        $pinterestUser = Socialite::driver('pinterest')->user();
+        $this->storeSocialData($pinterestUser, 'pinterest');
+        return redirect('/dashboard');
+    } catch (\Exception $e) {
+        return redirect('/login')->withErrors('Error autenticando con Pinterest');
+    }
+}
+
+
+
     private function storeSocialData($socialUser, $provider)
     {
         // Busca el registro de la cuenta social o lo crea si no existe
