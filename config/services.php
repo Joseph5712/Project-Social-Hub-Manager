@@ -43,8 +43,8 @@ return [
     ],
 
     'twitter' => [
-    'client_id' => env('TWITTER_CLIENT_ID'),
-    'client_secret' => env('TWITTER_CLIENT_SECRET'),
-    'redirect' => env('TWITTER_REDIRECT_URI'),
+    'client_id' => env('TWITTER_API_KEY'), // API Key
+    'client_secret' => env('TWITTER_API_SECRET'), // API Secret Key
+    'redirect' => env('TWITTER_REDIRECT_URI'), // URL de redirección
     ],
 ];
