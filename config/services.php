@@ -38,12 +38,9 @@ return [
     'linkedin' => [
     'client_id' => "782jqozziylt5p",
     'client_secret' => "WPL_AP1.zAdhTI5CBVFqsGZv.2VmpsA==",
+    'access_token' => "AQXMPJjchSqnJZv5pgi8hcRCfHcPkZ2ixXfdcR670MQP8OLRZt8hnjsdr4rUVrQkJh4f_0L71c6Kwz5WLCJavshK4k_Uq9ZvI1iWfs3monylxFcjCfLyPQigmlWIqnwdDjFasxwb7UhkivfXs6qyCUHyOXi5EGMnP0_DCankaFWSkoSae72wPAkeXmIQXGhqqSowUa6fS7LCwrZfdgkYdrB11qYYVsPJkRzZERuLO-j6Q2tMxqwaQSYfC_EDMkfLu_2dyeBjXp5Q3-9FBiYtLY4FHsxffTm2kpVUbr2a5uhRAjIy7w2eGMO67cTRKVxwWtvqv-IqXffHO67ftM08Qq1-rIcHvQ",
     'redirect' => "http://project.mysocialhub.xyz/auth/linkedin/callback",
     ],
 
-    'pinterest' => [
-    'client_id' => env('PINTEREST_CLIENT_ID'),
-    'client_secret' => env('PINTEREST_CLIENT_SECRET'),
-    'redirect' => env('PINTEREST_REDIRECT_URI'),
-    ],
+    //Aqui va las nuevas redes que recomendo el profesor
 ];

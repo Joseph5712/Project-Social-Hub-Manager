@@ -34,8 +34,9 @@ Route::get('/auth/linkedin/redirect', function () {
 
 // Ruta para manejar el callback de LinkedIn
 Route::get('/auth/linkedin/callback', function () {
+    
     $user = Socialite::driver('linkedin')->user();
-    // Aquí puedes manejar los datos del usuario, como almacenarlos en la base de datos o iniciar sesión
+    
     dd($user);
 })->name('linkedin.callback');
 
