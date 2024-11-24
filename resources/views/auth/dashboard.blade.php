@@ -73,6 +73,20 @@
                     </a>
                 </div>
             </div>
+
+            <!-- Twitter Connection Section -->
+            <div class="mt-8">
+                <h3 class="text-2xl font-bold mb-4">Conectar con Twitter</h3>
+                <div class="bg-white shadow-md rounded-lg p-6 text-center">
+                    <p class="mb-4 text-gray-600">
+                        Conecta tu cuenta de Twitter para comenzar a publicar directamente desde esta aplicación.
+                    </p>
+                    <a href="{{ route('twitter.redirect') }}" 
+                       class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg">
+                        Conectar con Twitter
+                    </a>
+                </div>
+            </div>
         </main>
     </div>
 

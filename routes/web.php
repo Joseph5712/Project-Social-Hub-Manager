@@ -43,6 +43,14 @@ Route::get('/auth/linkedin/callback', function () {
 
 
 
+Route::get('/auth/twitter/redirect', function () {
+    return Socialite::driver('twitter')->redirect();
+})->name('twitter.redirect');
 
+Route::get('/auth/twitter/callback', function () {
+    $user = Socialite::driver('twitter')->user();
+    // Aquí puedes guardar el token del usuario en la base de datos
+    dd($user);
+})->name('twitter.callback');
 
 

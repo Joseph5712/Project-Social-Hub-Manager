@@ -42,5 +42,9 @@ return [
     'redirect' => "http://project.mysocialhub.xyz/auth/linkedin/callback",
     ],
 
-    //Aqui va las nuevas redes que recomendo el profesor
+    'twitter' => [
+    'client_id' => env('TWITTER_CLIENT_ID'),
+    'client_secret' => env('TWITTER_CLIENT_SECRET'),
+    'redirect' => env('TWITTER_REDIRECT_URI'),
+    ],
 ];
