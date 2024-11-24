@@ -1,8 +1,10 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\SocialAuthController;
+use Laravel\Socialite\Facades\Socialite;
 
 Route::get('/', function () {
     return redirect()-> route('login');
@@ -21,12 +23,25 @@ Route::middleware('auth')->group(function () {
     })->name('dashboard');
 });
 
-Route::middleware('auth')->group(function () {
-    Route::get('auth/linkedin', [SocialAuthController::class, 'redirectToLinkedIn'])->name('auth.linkedin');
-    Route::get('auth/linkedin/callback', [SocialAuthController::class, 'handleLinkedInCallback']);
-});
+    //Route::get('auth/linkedin', [SocialAuthController::class, 'redirectToLinkedIn'])->name('auth.linkedin');
+    //Route::get('auth/linkedin/callback', [SocialAuthController::class, 'handleLinkedInCallback']);
 
 
-Route::get('/auth/pinterest', [SocialAuthController::class, 'redirectToPinterest'])->name('auth.pinterest');
-Route::get('/auth/pinterest/callback', [SocialAuthController::class, 'handlePinterestCallback']);
+// Ruta para redirigir al usuario a LinkedIn
+Route::get('/auth/linkedin/redirect', function () {
+    return Socialite::driver('linkedin')->redirect();
+})->name('linkedin.redirect');
+
+// Ruta para manejar el callback de LinkedIn
+Route::get('/auth/linkedin/callback', function () {
+    $user = Socialite::driver('linkedin')->user();
+    // Aquí puedes manejar los datos del usuario, como almacenarlos en la base de datos o iniciar sesión
+    dd($user);
+})->name('linkedin.callback');
+
+
+
+
+
+
 

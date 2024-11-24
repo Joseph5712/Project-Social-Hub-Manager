@@ -50,7 +50,7 @@
       <div class="bg-white shadow rounded-lg p-6">
         <h2 class="text-lg font-bold text-gray-700 mb-4">Integración con LinkedIn</h2>
         <p class="text-sm text-gray-600 mb-4">Prueba la funcionalidad de LinkedIn aquí:</p>
-        <a href="{{ route('auth.linkedin') }}" class="text-white bg-blue-600 px-4 py-2 rounded-md hover:bg-blue-500">
+        <a href="{{ route('linkedin.redirect') }}" class="text-white bg-blue-600 px-4 py-2 rounded-md hover:bg-blue-500">
           Probar LinkedIn
         </a>
       </div>
@@ -59,8 +59,7 @@
       <div class="bg-white shadow rounded-lg p-6">
         <h2 class="text-lg font-bold text-gray-700 mb-4">Integración con Pinterest</h2>
         <p class="text-sm text-gray-600 mb-4">Prueba la funcionalidad de Pinterest aquí:</p>
-        <a href="{{ route('auth.pinterest') }}" class="text-white bg-red-500 px-4 py-2 rounded-md hover:bg-red-400">
-          Probar Pinterest
+        
         </a>
       </div>
     </div>

@@ -20,29 +20,12 @@ class SocialAuthController extends Controller
 
     public function handleLinkedInCallback()
     {
+        
         $linkedinUser = Socialite::driver('linkedin')->user();
-        $this->storeSocialData($linkedinUser, 'linkedin');
-        return redirect('/dashboard');
+        //$this->storeSocialData($linkedinUser, 'linkedin');
+        dd($linkedinUser);
+        
     }
-
-
-    public function redirectToPinterest()
-    {
-        return Socialite::driver('pinterest')->redirect();
-    }
-
-
-    public function handlePinterestCallback()
-{
-    try {
-        $pinterestUser = Socialite::driver('pinterest')->user();
-        $this->storeSocialData($pinterestUser, 'pinterest');
-        return redirect('/dashboard');
-    } catch (\Exception $e) {
-        return redirect('/login')->withErrors('Error autenticando con Pinterest');
-    }
-}
-
 
 
     private function storeSocialData($socialUser, $provider)
@@ -58,6 +41,6 @@ class SocialAuthController extends Controller
             'token' => $socialUser->token,        // Token de acceso
             'refresh_token' => $socialUser->refreshToken ?? null, // Token de actualización, si está disponible
         ]
-    );
+        );
     }
 }

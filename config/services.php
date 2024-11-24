@@ -36,9 +36,9 @@ return [
         
     ],
     'linkedin' => [
-    'client_id' => '782jqozziylt5p',
-    'client_secret' => 'WPL_AP1.zAdhTI5CBVFqsGZv.2VmpsA',
-    'redirect' => 'http://project.mysocialhub.xyz/auth/linkedin/callback',
+    'client_id' => "782jqozziylt5p",
+    'client_secret' => "WPL_AP1.zAdhTI5CBVFqsGZv.2VmpsA==",
+    'redirect' => "http://project.mysocialhub.xyz/auth/linkedin/callback",
     ],
 
     'pinterest' => [
