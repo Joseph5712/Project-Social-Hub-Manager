@@ -30,6 +30,8 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/publish', [PublishController::class, 'index'])->middleware('auth')->name('publish');
 
+Route::get('/publish', [PublishController::class, 'index'])->middleware('auth')->name('publish');
+
     //Route::get('auth/linkedin', [SocialAuthController::class, 'redirectToLinkedIn'])->name('auth.linkedin');
     //Route::get('auth/linkedin/callback', [SocialAuthController::class, 'handleLinkedInCallback']);
 
@@ -70,6 +72,23 @@ Route::get('/auth/twitter/redirect', function () {
 
 Route::get('/auth/twitter/callback', function () {
     $user = Socialite::driver('twitter')->user();
+
+    // Guarda los tokens en la base de datos
+    DB::table('social_tokens')->updateOrInsert(
+        ['user_id' => Auth::id(), 'provider' => 'twitter'],
+        [
+            'access_token' => $user->token,
+            'token_secret' => $user->tokenSecret,
+            'updated_at' => now(),
+        ]
+    );
+
+    return redirect()->route('dashboard')->with('success', 'Conectado a Twitter con éxito.');
+});
+
+Route::post('/twitter/publish', [TwitterController::class, 'publish'])
+    ->middleware('auth')
+    ->name('twitter.publish');
 
     // Guarda los tokens en la base de datos
     DB::table('social_tokens')->updateOrInsert(

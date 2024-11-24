@@ -4,15 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-<<<<<<< HEAD
-<<<<<<< HEAD
-    "content-hash": "32635e62334767f30c383c80813a8e44",
-=======
-    "content-hash": "252542ec9842bf16bee6c0b6f010d379",
->>>>>>> 2a81746 (Testing Mastodon)
-=======
     "content-hash": "aa94d7207e0d23e85907bab88a09ce11",
->>>>>>> f1d22ce (Funcionalidad para publicar en Twitter(X))
     "packages": [
         {
             "name": "abraham/twitteroauth",
