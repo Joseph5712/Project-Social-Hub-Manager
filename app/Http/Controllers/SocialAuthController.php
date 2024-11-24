@@ -27,6 +27,15 @@ class SocialAuthController extends Controller
         
     }
 
+    public function redirectToMastodon(){
+        return Socialite::driver('mastodon')->redirect();
+    }
+
+    public function handleMastodonCallback(){
+        $mastodonUser = Socialite::driver('mastodon')->user();
+        dd($mastodonUser);
+    }
+
 
     private function storeSocialData($socialUser, $provider)
     {

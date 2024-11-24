@@ -5,6 +5,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\SocialAuthController;
 use Laravel\Socialite\Facades\Socialite;
+use App\Services\MastodonService;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\TwitterController;
+use App\Http\Controllers\PublishController;
 
 Route::get('/', function () {
     return redirect()-> route('login');
@@ -22,6 +27,8 @@ Route::middleware('auth')->group(function () {
         return view('auth/dashboard');
     })->name('dashboard');
 });
+
+Route::get('/publish', [PublishController::class, 'index'])->middleware('auth')->name('publish');
 
     //Route::get('auth/linkedin', [SocialAuthController::class, 'redirectToLinkedIn'])->name('auth.linkedin');
     //Route::get('auth/linkedin/callback', [SocialAuthController::class, 'handleLinkedInCallback']);
@@ -42,6 +49,20 @@ Route::get('/auth/linkedin/callback', function () {
 
 
 
+Route::get('/auth/mastodon/redirect', function (MastodonService $mastodon) {
+    return redirect($mastodon->getAuthorizationUrl());
+})->name('mastodon.redirect');
+
+Route::get('/auth/mastodon/callback', function (MastodonService $mastodon, Illuminate\Http\Request $request) {
+    $accessToken = $mastodon->getAccessToken($request->get('code'));
+    $user = $mastodon->getResourceOwner($accessToken);
+
+    // Manejar los datos del usuario
+    dd($user);
+})->name('mastodon.callback');
+
+
+
 
 Route::get('/auth/twitter/redirect', function () {
     return Socialite::driver('twitter')->redirect();
@@ -49,8 +70,22 @@ Route::get('/auth/twitter/redirect', function () {
 
 Route::get('/auth/twitter/callback', function () {
     $user = Socialite::driver('twitter')->user();
-    // Aquí puedes guardar el token del usuario en la base de datos
-    dd($user);
-})->name('twitter.callback');
+
+    // Guarda los tokens en la base de datos
+    DB::table('social_tokens')->updateOrInsert(
+        ['user_id' => Auth::id(), 'provider' => 'twitter'],
+        [
+            'access_token' => $user->token,
+            'token_secret' => $user->tokenSecret,
+            'updated_at' => now(),
+        ]
+    );
+
+    return redirect()->route('dashboard')->with('success', 'Conectado a Twitter con éxito.');
+});
+
+Route::post('/twitter/publish', [TwitterController::class, 'publish'])
+    ->middleware('auth')
+    ->name('twitter.publish');
 
 

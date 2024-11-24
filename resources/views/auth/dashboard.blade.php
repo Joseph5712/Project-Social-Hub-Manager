@@ -62,7 +62,7 @@
             <div class="mt-8">
                 <h3 class="text-2xl font-bold mb-4">Acciones Rápidas</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <a href="#" class="block bg-green-500 hover:bg-green-600 text-white py-4 px-6 rounded-lg text-center">
+                    <a href="{{ route('publish') }}" class="block bg-green-500 hover:bg-green-600 text-white py-4 px-6 rounded-lg text-center">
                         <span class="font-bold text-xl">Publicar Entrada</span>
                     </a>
                     <a href="#" class="block bg-yellow-500 hover:bg-yellow-600 text-white py-4 px-6 rounded-lg text-center">
@@ -89,6 +89,5 @@
             </div>
         </main>
     </div>
-
 </body>
 </html>
