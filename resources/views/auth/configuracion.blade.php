@@ -1,9 +1,9 @@
 <?php
 require_once 'vendor/autoload.php';
 
-$clientId = '';
-$clientSecret = '';
-$redirectUri = '';
+$googleClientId = getenv('GOOGLE_CLIENT_ID');
+$googleClientSecret = getenv('GOOGLE_CLIENT_SECRET');
+$redirectUri = 'http://project.mysocialhub.xyz/dashboard';
 
 
 $client = new Google_Client();

@@ -7,6 +7,7 @@ use App\Http\Controllers\SocialAuthController;
 use App\Http\Controllers\TwitterController;
 use App\Http\Controllers\PublishController;
 use Laravel\Socialite\Facades\Socialite;
+use App\Services\MastodonService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -38,11 +39,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', function () {
         return view('auth/dashboard');
     })->name('dashboard');
-
-    // Publicar entradas
-    Route::get('/publish', [PublishController::class, 'index'])->name('publish');
-    Route::post('/twitter/publish', [TwitterController::class, 'publish'])->name('twitter.publish');
 });
+
+Route::get('/publish', [PublishController::class, 'index'])->middleware('auth')->name('publish');
+
+    //Route::get('auth/linkedin', [SocialAuthController::class, 'redirectToLinkedIn'])->name('auth.linkedin');
+    //Route::get('auth/linkedin/callback', [SocialAuthController::class, 'handleLinkedInCallback']);
+
 
 /*
 |--------------------------------------------------------------------------
@@ -59,13 +62,23 @@ Route::get('/auth/linkedin/callback', function () {
     dd($user); // Depuración: Muestra los datos del usuario autenticado
 })->name('linkedin.callback');
 
-/*
-|--------------------------------------------------------------------------
-| Rutas para Twitter
-|--------------------------------------------------------------------------
-*/
 
-// Redirigir al usuario para iniciar sesión con Twitter
+
+Route::get('/auth/mastodon/redirect', function (MastodonService $mastodon) {
+    return redirect($mastodon->getAuthorizationUrl());
+})->name('mastodon.redirect');
+
+Route::get('/auth/mastodon/callback', function (MastodonService $mastodon, Illuminate\Http\Request $request) {
+    $accessToken = $mastodon->getAccessToken($request->get('code'));
+    $user = $mastodon->getResourceOwner($accessToken);
+
+    // Manejar los datos del usuario
+    dd($user);
+})->name('mastodon.callback');
+
+
+
+
 Route::get('/auth/twitter/redirect', function () {
     return Socialite::driver('twitter')->redirect();
 })->name('twitter.redirect');
@@ -86,3 +99,9 @@ Route::get('/auth/twitter/callback', function () {
 
     return redirect()->route('dashboard')->with('success', 'Conectado a Twitter con éxito.');
 });
+
+Route::post('/twitter/publish', [TwitterController::class, 'publish'])
+    ->middleware('auth')
+    ->name('twitter.publish');
+
+

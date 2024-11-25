@@ -47,4 +47,12 @@ return [
     'client_secret' => env('TWITTER_API_SECRET'), // API Secret Key
     'redirect' => env('TWITTER_REDIRECT_URI'), // URL de redirección
     ],
+
+    'mastodon' => [
+    'client_id' => env('MASTODON_CLIENT_ID'),
+    'client_secret' => env('MASTODON_CLIENT_SECRET'),
+    'redirect' => env('MASTODON_REDIRECT_URI'),
+    'instance_uri' => env('MASTODON_INSTANCE_URI'), 
+],
+
 ];
