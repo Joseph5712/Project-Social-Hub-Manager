@@ -10,6 +10,7 @@ use Laravel\Socialite\Facades\Socialite;
 use App\Services\MastodonService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\MastodonController;
 
 /*
 |--------------------------------------------------------------------------
@@ -63,7 +64,7 @@ Route::get('/auth/linkedin/callback', function () {
 })->name('linkedin.callback');
 
 
-
+/*
 Route::get('/auth/mastodon/redirect', function (MastodonService $mastodon) {
     return redirect($mastodon->getAuthorizationUrl());
 })->name('mastodon.redirect');
@@ -75,6 +76,20 @@ Route::get('/auth/mastodon/callback', function (MastodonService $mastodon, Illum
     // Manejar los datos del usuario
     dd($user);
 })->name('mastodon.callback');
+*/
+
+
+
+
+// Redirigir al usuario a la autorización de Mastodon
+Route::get('/auth/mastodon/redirect', [MastodonController::class, 'redirect'])->name('mastodon.redirect');
+
+// Callback después de la autorización
+Route::get('/auth/mastodon/callback', [MastodonController::class, 'callback'])->name('mastodon.callback');
+
+// Ruta para publicar en Mastodon
+Route::post('/mastodon/publish', [MastodonController::class, 'publish'])->name('mastodon.publish');
+
 
 
 
@@ -105,3 +120,18 @@ Route::post('/twitter/publish', [TwitterController::class, 'publish'])
     ->name('twitter.publish');
 
 
+
+
+    Route::get('/publish/select', function () {
+        return view('publish.select');
+    })->middleware('auth')->name('publish.select');
+
+    // Publicar en Twitter
+Route::get('/publish/twitter', function () {
+    return view('publish.twitter');
+})->middleware('auth')->name('publish.twitter');
+
+// Publicar en Mastodon
+Route::get('/publish/mastodon', function () {
+    return view('publish.mastodon');
+})->middleware('auth')->name('publish.mastodon');
