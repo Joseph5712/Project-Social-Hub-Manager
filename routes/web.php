@@ -4,55 +4,73 @@ use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\SocialAuthController;
+use App\Http\Controllers\TwitterController;
+use App\Http\Controllers\PublishController;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\TwitterController;
-use App\Http\Controllers\PublishController;
+
+/*
+|--------------------------------------------------------------------------
+| Rutas de autenticación
+|--------------------------------------------------------------------------
+*/
 
 Route::get('/', function () {
-    return redirect()-> route('login');
+    return redirect()->route('login');
 });
 
-
+// Registro y login
 Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
 Route::post('/register', [AuthController::class, 'register']);
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 
+/*
+|--------------------------------------------------------------------------
+| Rutas protegidas (middleware auth)
+|--------------------------------------------------------------------------
+*/
+
 Route::middleware('auth')->group(function () {
+    // Dashboard
     Route::get('/dashboard', function () {
         return view('auth/dashboard');
     })->name('dashboard');
+
+    // Publicar entradas
+    Route::get('/publish', [PublishController::class, 'index'])->name('publish');
+    Route::post('/twitter/publish', [TwitterController::class, 'publish'])->name('twitter.publish');
 });
 
-Route::get('/publish', [PublishController::class, 'index'])->middleware('auth')->name('publish');
+/*
+|--------------------------------------------------------------------------
+| Rutas para LinkedIn
+|--------------------------------------------------------------------------
+*/
 
-    //Route::get('auth/linkedin', [SocialAuthController::class, 'redirectToLinkedIn'])->name('auth.linkedin');
-    //Route::get('auth/linkedin/callback', [SocialAuthController::class, 'handleLinkedInCallback']);
-
-
-// Ruta para redirigir al usuario a LinkedIn
 Route::get('/auth/linkedin/redirect', function () {
     return Socialite::driver('linkedin')->redirect();
 })->name('linkedin.redirect');
 
-// Ruta para manejar el callback de LinkedIn
 Route::get('/auth/linkedin/callback', function () {
-    
     $user = Socialite::driver('linkedin')->user();
-    
-    dd($user);
+    dd($user); // Depuración: Muestra los datos del usuario autenticado
 })->name('linkedin.callback');
 
+/*
+|--------------------------------------------------------------------------
+| Rutas para Twitter
+|--------------------------------------------------------------------------
+*/
 
-
-
+// Redirigir al usuario para iniciar sesión con Twitter
 Route::get('/auth/twitter/redirect', function () {
     return Socialite::driver('twitter')->redirect();
 })->name('twitter.redirect');
 
+// Callback después de la autenticación con Twitter
 Route::get('/auth/twitter/callback', function () {
     $user = Socialite::driver('twitter')->user();
 
@@ -68,9 +86,3 @@ Route::get('/auth/twitter/callback', function () {
 
     return redirect()->route('dashboard')->with('success', 'Conectado a Twitter con éxito.');
 });
-
-Route::post('/twitter/publish', [TwitterController::class, 'publish'])
-    ->middleware('auth')
-    ->name('twitter.publish');
-
-
