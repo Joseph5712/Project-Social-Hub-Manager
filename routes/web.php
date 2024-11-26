@@ -76,7 +76,15 @@ Route::post('/mastodon/publish', [MastodonController::class, 'publish'])->name('
 
 
 Route::get('/auth/twitter/redirect', function () {
-    return Socialite::driver('twitter')->redirect();
+    DB::table('social_tokens')
+        ->where('user_id', Auth::id())
+        ->where('provider', 'twitter')
+        ->delete();
+    // Construir la URL de redirección manualmente con el parámetro auth_type
+    $url = Socialite::driver('twitter')->redirect()->getTargetUrl();
+    $url .= '&auth_type=reauthenticate'; // Añadir el parámetro al final de la URL
+
+    return redirect($url);
 })->name('twitter.redirect');
 
 // Callback después de la autenticación con Twitter
