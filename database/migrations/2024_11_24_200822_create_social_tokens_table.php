@@ -16,8 +16,11 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('provider'); // Ej: 'twitter'
             $table->string('access_token');
-            $table->string('token_secret');
+            $table->string('token_secret')->nullable();
             $table->timestamps();
+
+            $table->foreign('user_id', 'unique_foreign_key_name')->references('id')->on('users')->onDelete('cascade');
+
         });
     }
 

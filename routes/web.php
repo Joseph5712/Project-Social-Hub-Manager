@@ -11,6 +11,7 @@ use App\Services\MastodonService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\MastodonController;
+use App\Http\Controllers\SocialAccountController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,26 +43,10 @@ Route::middleware('auth')->group(function () {
     })->name('dashboard');
 });
 
-Route::get('/publish', [PublishController::class, 'index'])->middleware('auth')->name('publish');
+//Route::get('/publish', [PublishController::class, 'index'])->middleware('auth')->name('publish');
 
     //Route::get('auth/linkedin', [SocialAuthController::class, 'redirectToLinkedIn'])->name('auth.linkedin');
     //Route::get('auth/linkedin/callback', [SocialAuthController::class, 'handleLinkedInCallback']);
-
-
-/*
-|--------------------------------------------------------------------------
-| Rutas para LinkedIn
-|--------------------------------------------------------------------------
-*/
-
-Route::get('/auth/linkedin/redirect', function () {
-    return Socialite::driver('linkedin')->redirect();
-})->name('linkedin.redirect');
-
-Route::get('/auth/linkedin/callback', function () {
-    $user = Socialite::driver('linkedin')->user();
-    dd($user); // Depuración: Muestra los datos del usuario autenticado
-})->name('linkedin.callback');
 
 
 /*
@@ -83,11 +68,7 @@ Route::get('/auth/mastodon/callback', function (MastodonService $mastodon, Illum
 
 // Redirigir al usuario a la autorización de Mastodon
 Route::get('/auth/mastodon/redirect', [MastodonController::class, 'redirect'])->name('mastodon.redirect');
-
-// Callback después de la autorización
 Route::get('/auth/mastodon/callback', [MastodonController::class, 'callback'])->name('mastodon.callback');
-
-// Ruta para publicar en Mastodon
 Route::post('/mastodon/publish', [MastodonController::class, 'publish'])->name('mastodon.publish');
 
 
@@ -135,3 +116,12 @@ Route::get('/publish/twitter', function () {
 Route::get('/publish/mastodon', function () {
     return view('publish.mastodon');
 })->middleware('auth')->name('publish.mastodon');
+
+
+Route::middleware('auth')->group(function () {
+    // Ruta para ver las cuentas conectadas
+    Route::get('/social-accounts', [SocialAccountController::class, 'index'])->name('social.index');
+
+    // Ruta para desconectar una cuenta
+    Route::delete('/social-accounts/{id}/disconnect', [SocialAccountController::class, 'disconnect'])->name('social.disconnect');
+});
