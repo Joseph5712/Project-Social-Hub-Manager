@@ -20,13 +20,16 @@
                         <a href="#" class="block py-2 px-4 hover:bg-blue-700">Dashboard</a>
                     </li>
                     <li>
-                        <a href="#" class="block py-2 px-4 hover:bg-blue-700">Publicar Entrada</a>
+                        <a href="{{ route('publish.select') }}" class="block py-2 px-4 hover:bg-blue-700">Publicar Entrada</a>
                     </li>
                     <li>
                         <a href="#" class="block py-2 px-4 hover:bg-blue-700">Horarios</a>
                     </li>
                     <li>
                         <a href="#" class="block py-2 px-4 hover:bg-blue-700">Cola de Publicaciones</a>
+                    </li>
+                    <li>
+                        <a href="{{ route('social.index') }}" class="block py-2 px-4 hover:bg-blue-700">Cuentas Conectadas</a>
                     </li>
                     <li>
                         <form method="POST" action="{{ route('logout') }}">
@@ -61,9 +64,9 @@
             <!-- Actions Section -->
             <div class="mt-8">
                 <h3 class="text-2xl font-bold mb-4">Acciones Rápidas</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     <a href="{{ route('publish.select') }}" 
-                    class="block bg-green-500 hover:bg-green-600 text-white py-4 px-6 rounded-lg text-center">
+                       class="block bg-green-500 hover:bg-green-600 text-white py-4 px-6 rounded-lg text-center">
                         <span class="font-bold text-xl">Publicar Entrada</span>
                     </a>
                     <a href="#" class="block bg-yellow-500 hover:bg-yellow-600 text-white py-4 px-6 rounded-lg text-center">
@@ -71,6 +74,10 @@
                     </a>
                     <a href="#" class="block bg-red-500 hover:bg-red-600 text-white py-4 px-6 rounded-lg text-center">
                         <span class="font-bold text-xl">Revisar Cola</span>
+                    </a>
+                    <a href="{{ route('social.index') }}" 
+                       class="block bg-blue-500 hover:bg-blue-600 text-white py-4 px-6 rounded-lg text-center">
+                        <span class="font-bold text-xl">Cuentas Conectadas</span>
                     </a>
                 </div>
             </div>
@@ -103,7 +110,6 @@
                 </div>
             </div>
         </main>
-    
-</div>
+    </div>
 </body>
 </html>
