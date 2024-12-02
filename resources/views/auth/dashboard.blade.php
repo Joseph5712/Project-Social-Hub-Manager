@@ -20,7 +20,7 @@
                         <a href="#" class="block py-2 px-4 hover:bg-blue-700">Dashboard</a>
                     </li>
                     <li>
-                        <a href="{{ route('publish.select') }}" class="block py-2 px-4 hover:bg-blue-700">Publicar Entrada</a>
+                        <a href="{{ route('schedule.select_publication_type') }}" class="block py-2 px-4 hover:bg-blue-700">Publicar Entrada</a>
                     </li>
                     <li>
                         <a href="#" class="block py-2 px-4 hover:bg-blue-700">Horarios</a>
@@ -65,7 +65,7 @@
             <div class="mt-8">
                 <h3 class="text-2xl font-bold mb-4">Acciones Rápidas</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <a href="{{ route('publish.select') }}" 
+                    <a href="{{ route('schedule.select_publication_type') }}" 
                        class="block bg-green-500 hover:bg-green-600 text-white py-4 px-6 rounded-lg text-center">
                         <span class="font-bold text-xl">Publicar Entrada</span>
                     </a>

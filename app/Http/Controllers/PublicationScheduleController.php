@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\PublicationSchedule;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class PublicationScheduleController extends Controller {
     // Mostrar todos los horarios del usuario
     public function index() {
-        $schedules = PublicationSchedule::where('user_id', auth()->id())->get();
+        $schedules=DB::table('scheduled_publications')
+        ->where('user_id', Auth::id())->get();
+        //$schedules = PublicationSchedule::where('user_id', auth()->id())->get();
         return view('schedules.index', compact('schedules'));
     }
 
@@ -24,8 +27,8 @@ class PublicationScheduleController extends Controller {
             'time' => 'required|date_format:H:i',
         ]);
 
-        PublicationSchedule::create([
-            'user_id' => auth()->id(),
+        DB::table('scheduled_publications')::create([
+            'user_id' => Auth::id(),
             'day_of_week' => $request->input('day_of_week'),
             'time' => $request->input('time'),
         ]);
@@ -35,13 +38,13 @@ class PublicationScheduleController extends Controller {
 
     // Editar un horario existente
     public function edit($id) {
-        $schedule = PublicationSchedule::findOrFail($id);
+        $schedule = DB::table('scheduled_publications')::findOrFail($id);
         return view('schedules.edit', compact('schedule'));
     }
 
     // Actualizar un horario existente
     public function update(Request $request, $id) {
-        $schedule = PublicationSchedule::findOrFail($id);
+        $schedule = DB::table('scheduled_publications')::findOrFail($id);
 
         $request->validate([
             'day_of_week' => 'required|integer|between:0,6',
@@ -54,7 +57,7 @@ class PublicationScheduleController extends Controller {
 
     // Eliminar un horario
     public function destroy($id) {
-        $schedule = PublicationSchedule::findOrFail($id);
+        $schedule = DB::table('scheduled_publications')::findOrFail($id);
         $schedule->delete();
         return redirect()->route('schedules.index')->with('success', 'Schedule deleted successfully.');
     }

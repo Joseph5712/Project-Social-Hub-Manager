@@ -111,9 +111,7 @@ Route::post('/twitter/publish', [TwitterController::class, 'publish'])
 
 
 
-    Route::get('/publish/select', function () {
-        return view('publish.select');
-    })->middleware('auth')->name('publish.select');
+
 
     // Publicar en Twitter
 Route::get('/publish/twitter', function () {
@@ -133,3 +131,13 @@ Route::middleware('auth')->group(function () {
     // Ruta para desconectar una cuenta
     Route::delete('/social-accounts/{id}/disconnect', [SocialAccountController::class, 'disconnect'])->name('social.disconnect');
 });
+
+
+
+Route::get('/schedule/calendar', function () {
+    return view('schedule.select_publication_type');
+});
+
+Route::get('/publish/publications/type-selection', function () {
+    return view('schedule.select_publication_type');
+})->middleware('auth')->name('schedule.select_publication_type');
