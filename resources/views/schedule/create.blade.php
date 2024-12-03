@@ -9,7 +9,7 @@
 <body class="bg-gray-100">
     <div class="container mx-auto p-6">
         <h1 class="text-2xl font-bold mb-6">Crear Nuevo Horario</h1>
-        <form action="{{ route('schedules.store') }}" method="POST" class="bg-white p-6 shadow-md rounded">
+        <form action="{{ route('schedule.store') }}" method="POST" class="bg-white p-6 shadow-md rounded">
             @csrf
             <div class="mb-4">
                 <label for="day_of_week" class="block text-gray-700 font-bold mb-2">Día de la Semana</label>

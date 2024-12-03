@@ -69,7 +69,7 @@
                        class="block bg-green-500 hover:bg-green-600 text-white py-4 px-6 rounded-lg text-center">
                         <span class="font-bold text-xl">Publicar Entrada</span>
                     </a>
-                    <a href="#" class="block bg-yellow-500 hover:bg-yellow-600 text-white py-4 px-6 rounded-lg text-center">
+                    <a href="{{ route('schedule.index') }}" class="block bg-yellow-500 hover:bg-yellow-600 text-white py-4 px-6 rounded-lg text-center">
                         <span class="font-bold text-xl">Configurar Horarios</span>
                     </a>
                     <a href="#" class="block bg-red-500 hover:bg-red-600 text-white py-4 px-6 rounded-lg text-center">

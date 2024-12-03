@@ -13,6 +13,7 @@ use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use PragmaRX\Google2FALaravel\Middleware;
+use App\Http\Controllers\PublicationScheduleController;
 
 /*
 |----------------------------------------------------------------------
@@ -104,6 +105,10 @@ Route::get('/publish/mastodon', function () {
     return view('publish.mastodon');
 })->middleware('auth')->name('publish.mastodon');
 
+Route::get('/publish', function () {
+    return view('publish.select');
+})->middleware('auth')->name('publish.select');
+
 /*
 |----------------------------------------------------------------------
 | Rutas de gestión de cuentas sociales
@@ -133,9 +138,19 @@ Route::get('/publish/publications/type-selection', function () {
 })->middleware('auth')->name('schedule.select_publication_type');
 
 
-/*use App\Http\Controllers\PublicationScheduleController;
 
-Route::middleware('auth')->group(function () {
-    Route::resource('schedules', PublicationScheduleController::class);
-});
-*/
+
+
+Route::get('/schedule', [PublicationScheduleController::class, 'index'])->name('schedule.index');
+
+
+
+Route::get('/schedules/create', [PublicationScheduleController::class, 'create'])->name('schedule.create');
+
+
+Route::get('/schedules/{schedule}/edit', [PublicationScheduleController::class, 'edit'])->name('schedule.edit');
+
+// Ruta para eliminar un horario
+Route::delete('/schedules/{schedule}', [PublicationScheduleController::class, 'destroy'])->name('schedule.destroy');
+
+Route::post('/schedule', [PublicationScheduleController::class, 'store'])->name('schedule.store');

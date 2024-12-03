@@ -2,63 +2,60 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PublicationSchedule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
-class PublicationScheduleController extends Controller {
-    // Mostrar todos los horarios del usuario
-    public function index() {
-        $schedules=DB::table('scheduled_publications')
-        ->where('user_id', Auth::id())->get();
-        //$schedules = PublicationSchedule::where('user_id', auth()->id())->get();
-        return view('schedules.index', compact('schedules'));
+class PublicationScheduleController extends Controller
+{
+    public function index()
+    {
+        $schedules = PublicationSchedule::where('user_id', Auth::id())->get();
+        return view('schedule.index', compact('schedules'));
     }
 
-    // Mostrar formulario para crear un nuevo horario
-    public function create() {
-        return view('schedules.create');
+    public function create()
+    {
+        return view('schedule.create');
     }
 
-    // Guardar un nuevo horario
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $request->validate([
-            'day_of_week' => 'required|integer|between:0,6', // Domingo a Sábado
+            'day_of_week' => 'required|string|max:1',
             'time' => 'required|date_format:H:i',
         ]);
 
-        DB::table('scheduled_publications')::create([
+        PublicationSchedule::create([
             'user_id' => Auth::id(),
-            'day_of_week' => $request->input('day_of_week'),
-            'time' => $request->input('time'),
+            'day_of_week' => $request->day_of_week,
+            'time' => $request->time,
         ]);
 
-        return redirect()->route('schedules.index')->with('success', 'Schedule created successfully.');
+        return redirect()->route('schedule.index')->with('success', 'Horario creado con éxito.');
     }
 
-    // Editar un horario existente
-    public function edit($id) {
-        $schedule = DB::table('scheduled_publications')::findOrFail($id);
-        return view('schedules.edit', compact('schedule'));
+    public function edit(PublicationSchedule $schedule)
+    {
+        return view('schedule.edit', compact('schedule'));
     }
 
-    // Actualizar un horario existente
-    public function update(Request $request, $id) {
-        $schedule = DB::table('scheduled_publications')::findOrFail($id);
-
+    public function update(Request $request, PublicationSchedule $schedule)
+    {
         $request->validate([
-            'day_of_week' => 'required|integer|between:0,6',
+            'day_of_week' => 'required|string|max:1',
             'time' => 'required|date_format:H:i',
         ]);
 
-        $schedule->update($request->all());
-        return redirect()->route('schedules.index')->with('success', 'Schedule updated successfully.');
+        $schedule->update($request->only(['day_of_week', 'time']));
+
+        return redirect()->route('schedule.index')->with('success', 'Horario actualizado con éxito.');
     }
 
-    // Eliminar un horario
-    public function destroy($id) {
-        $schedule = DB::table('scheduled_publications')::findOrFail($id);
+    public function destroy(PublicationSchedule $schedule)
+    {
         $schedule->delete();
-        return redirect()->route('schedules.index')->with('success', 'Schedule deleted successfully.');
+
+        return redirect()->route('schedule.index')->with('success', 'Horario eliminado con éxito.');
     }
 }
