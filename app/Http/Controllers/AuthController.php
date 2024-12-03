@@ -6,8 +6,13 @@ use Illuminate\Http\Request;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+//use PragmaRX\Google2FA\Google2FA;
+use PragmaRX\Google2FAQRCode\QRCode\Bacon;
+use PragmaRX\Google2FAQRCode\Google2FA;
+
 
 class AuthController extends Controller
 {
@@ -50,6 +55,9 @@ class AuthController extends Controller
         ]);
 
         if (Auth::attempt($request->only('email', 'password'))) {
+            if (Auth::user()->google2fa_secret && !session('2fa_verified')) {
+                return redirect()->route('enablefa');  // Redirige al formulario de 2FA
+            }
             return redirect()->intended('/dashboard')->with('success', 'Inicio de sesión exitoso.');
         }
 
@@ -60,8 +68,71 @@ class AuthController extends Controller
 
     // Manejador de cierre de sesión
     public function logout(Request $request)
-    {
-        Auth::logout();
-        return redirect()->route('login')->with('success', 'Sesión cerrada.');
+{
+    // Eliminar el estado de 2FA de la sesión
+    $request->session()->forget('2fa_verified');
+    
+    // Realizar logout
+    Auth::logout();
+    
+    // Redirigir a la página de login
+    return redirect()->route('login')->with('success', 'Sesión cerrada.');
+}
+
+
+    public function enable2FA(Request $request)
+{
+    $google2fa = new Google2FA();
+    $userId = Auth::id();  // Obtener el ID del usuario autenticado
+
+    // Generar un secreto único para el usuario
+    $secret = $google2fa->generateSecretKey(6,$userId);
+    //$google2fa->setAllowInsecureCallToGoogleApis(true);
+
+    //dd($secret);  // Verifica que el $secret no esté vacío
+
+    // Obtener el usuario autenticado
+    
+
+    // Usar updateOrInsert para guardar o actualizar el secreto de Google2FA
+    DB::table('users')->updateOrInsert(
+        ['id' => $userId],  // Condición de búsqueda (usuario por ID)
+        ['google2fa_secret' => $secret]  // El campo que queremos actualizar
+    );
+    
+    // Generar un QR Code para Google Authenticator
+    $QRImage = $google2fa->getQRCodeUrl(
+        config('app.name'),  // Nombre de la app
+        Auth::user()->email, // Correo del usuario
+        $secret              // Secreto generado
+    );
+    //dd($QRImage);
+    
+    return view('auth.enable2fa', [
+        'QRImage' => $QRImage,
+        'secret' => $secret,
+    ]);
+}
+
+public function verify2FA(Request $request)
+{
+    $google2fa = new Google2FA();
+
+    $user = Auth::user();  // Obtener al usuario autenticado
+
+    // Verificar si el código OTP ingresado es válido
+    $valid = $google2fa->verifyKey($user->google2fa_secret, $request->input('otp'));
+    //dd($user->google2fa_secret);  // Verifica si se ha guardado correctamente el secreto
+
+
+    if ($valid) {
+        // Guardar en sesión que el 2FA ha sido verificado
+        $request->session()->put('2fa_verified', true);
+        
+        return redirect()->route('dashboard')->with('success', '2FA activado con éxito.');
+    } else {
+        return back()->withErrors(['error' => 'El código OTP es inválido.']);
     }
+}
+
 }
