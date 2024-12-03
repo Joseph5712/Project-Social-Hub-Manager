@@ -125,7 +125,7 @@ Route::middleware('auth')->group(function () {
 */
 
 Route::get('/schedule/calendar', function () {
-    return view('schedule.select_publication_type');
+    return view('schedule.calendar');
 });
 
 Route::get('/publish/publications/type-selection', function () {
