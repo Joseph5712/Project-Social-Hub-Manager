@@ -131,3 +131,11 @@ Route::get('/schedule/calendar', function () {
 Route::get('/publish/publications/type-selection', function () {
     return view('schedule.select_publication_type');
 })->middleware('auth')->name('schedule.select_publication_type');
+
+
+/*use App\Http\Controllers\PublicationScheduleController;
+
+Route::middleware('auth')->group(function () {
+    Route::resource('schedules', PublicationScheduleController::class);
+});
+*/
