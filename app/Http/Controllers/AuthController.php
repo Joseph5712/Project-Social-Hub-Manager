@@ -86,7 +86,7 @@ class AuthController extends Controller
     $userId = Auth::id();  // Obtener el ID del usuario autenticado
 
     // Generar un secreto único para el usuario
-    $secret = $google2fa->generateSecretKey(6,$userId);
+    $secret = $google2fa->generateSecretKey();
     //$google2fa->setAllowInsecureCallToGoogleApis(true);
 
     //dd($secret);  // Verifica que el $secret no esté vacío
@@ -99,9 +99,10 @@ class AuthController extends Controller
         ['id' => $userId],  // Condición de búsqueda (usuario por ID)
         ['google2fa_secret' => $secret]  // El campo que queremos actualizar
     );
+    $google2fa->setQrCodeService(new Bacon());
     
     // Generar un QR Code para Google Authenticator
-    $QRImage = $google2fa->getQRCodeUrl(
+    $QRImage = $google2fa->getQRCodeInline(
         config('app.name'),  // Nombre de la app
         Auth::user()->email, // Correo del usuario
         $secret              // Secreto generado

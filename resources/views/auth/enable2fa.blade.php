@@ -13,7 +13,7 @@
         <p class="mb-4 text-center">Escanea este código QR con Google Authenticator:</p>
         <div class="flex justify-center mb-4">
             @if($QRImage)
-                <img src="{{ $QRImage }}" alt="QR Code" class="w-48 h-48">
+                {!! $QRImage !!}
             @else
                 <p>No se pudo generar el código QR.</p>
             @endif
